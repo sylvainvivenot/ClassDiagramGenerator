@@ -59,6 +59,9 @@
     <None Include="DataForTests\Class1InheritFromClass2.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="DataForTests\Class1UsedInClass2.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="DataForTests\OneClass2MethodsWithArguments.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

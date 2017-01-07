@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using AssemblyModel;
 using Microsoft.CodeAnalysis;
+using Modelizer;
 
 namespace Modelizer
 {
     public class SolutionModelBuilder
     {
         private readonly SolutionReader _solutionReader;
+        private ClassModel[] _classModels;
 
         public SolutionModelBuilder(string solutionPath)
         {
@@ -17,7 +19,9 @@ namespace Modelizer
 
         public SolutionModel Build()
         {
-            SolutionModel solution = new SolutionModel {Classes = GenerateClassModels(), Links = GenerateLinkModels()};
+            _classModels = GenerateClassModels();
+            SolutionModel solution = new SolutionModel { Classes = _classModels, Links = GenerateLinkModels() };
+
             return solution;
         }
 
@@ -27,7 +31,7 @@ namespace Modelizer
             ProcessGeneralization(
                 (type, baseType) =>
                 {
-                    linkModel.Add(new LinkModel{ From = type, To = baseType, Relashionship = "generalization"});
+                    linkModel.Add(new LinkModel { From = type, To = baseType, Relashionship = "generalization" });
                 });
             ProcessAggregation(
                 (type, baseType) =>
@@ -35,6 +39,56 @@ namespace Modelizer
                     linkModel.Add(new LinkModel { From = type, To = baseType, Relashionship = "aggregation" });
                 });
             return linkModel.ToArray();
+        }
+
+        public void ProcessAggregation(Action<int, int> addLink)
+        {
+            foreach (var classModel in _classModels)
+            {
+                List<int> references = GetReferencesInMethods(classModel);
+                references.AddRange(GetReferencesInProperties(classModel));
+                foreach (int reference in references.Distinct())
+                {
+                    addLink(classModel.Key, reference);
+                }
+            }
+        }
+
+        private List<int> GetReferencesInProperties(ClassModel classModel)
+        {
+            List<int> references = new List<int>();
+            foreach (var referencerClassModel in _classModels)
+            {
+                if (referencerClassModel.Properties.Any((prop) => prop.Type == classModel.Name))
+                {
+                    references.Add(referencerClassModel.Key);
+                }
+            }
+            return references;
+        }
+
+        private List<int> GetReferencesInMethods(ClassModel classModel)
+        {
+            List<int> references = new List<int>();
+            foreach (var referencerClassModel in _classModels)
+            {
+                if (referencerClassModel.Methods.Any((method) => method.Type == classModel.Name))
+                {
+                    references.Add(referencerClassModel.Key);
+                }
+            }
+
+            foreach (var referencerClassModel in _classModels)
+            {
+                if (referencerClassModel.Methods.Any((method) =>
+                {
+                    return method.Parameters.Any((parameter) => parameter.Type == classModel.Name);
+                }))
+                {
+                    references.Add(referencerClassModel.Key);
+                }
+            }
+            return references;
         }
 
         public void ProcessGeneralization(Action<int, int> addLink)
@@ -56,20 +110,16 @@ namespace Modelizer
             }
         }
 
-        public void ProcessAggregation(Action<int, int> addLink)
-        {
-        }
-
 
         private ClassModel[] GenerateClassModels()
         {
-            var typeSymbols = _solutionReader.TypeSymbols.ToList(); 
+            var typeSymbols = _solutionReader.TypeSymbols.ToList();
             ClassModel[] classModels = new ClassModel[typeSymbols.Count];
             for (int i = 0; i < classModels.Length; i++)
             {
                 classModels[i] = new ClassModel()
                 {
-                    Key=i,
+                    Key = i,
                     Name = typeSymbols[i].Name,
                     Methods = GenerateMethodModels(typeSymbols[i]),
                     Properties = GeneratePropertyModels(typeSymbols[i])
@@ -83,7 +133,7 @@ namespace Modelizer
             var classInformation = new ClassInformation(typeSymbol);
             List<IFieldSymbol> fields = classInformation.GetFields().ToList();
             List<IPropertySymbol> properties = classInformation.GetProperties().ToList();
-            PropertyModel[] propertyModels = new PropertyModel[fields.Count+properties.Count];
+            PropertyModel[] propertyModels = new PropertyModel[fields.Count + properties.Count];
             for (int i = 0; i < fields.Count; i++)
             {
                 propertyModels[i] = new PropertyModel()
@@ -93,7 +143,7 @@ namespace Modelizer
                     Visibility = GetAccessibilityName(fields[i].DeclaredAccessibility)
                 };
             }
-            for (int i = 0; i <  properties.Count; i++)
+            for (int i = 0; i < properties.Count; i++)
             {
                 propertyModels[fields.Count + i] = new PropertyModel()
                 {
@@ -107,7 +157,7 @@ namespace Modelizer
 
         private static string TypeName(ITypeSymbol type)
         {
-            return type.TypeKind != TypeKind.Array ? type.Name : ((IArrayTypeSymbol) type).ElementType.Name + "[]";
+            return type.TypeKind != TypeKind.Array ? type.Name : ((IArrayTypeSymbol)type).ElementType.Name + "[]";
         }
 
         private string GetAccessibilityName(Accessibility declaredAccessibility)
@@ -127,7 +177,7 @@ namespace Modelizer
                     Name = methods[i].Name,
                     Parameters = GeneratePrameterModels(methods[i]),
                     Visibility = GetAccessibilityName(methods[i].DeclaredAccessibility),
-                    Type= TypeName(methods[i].ReturnType)
+                    Type = TypeName(methods[i].ReturnType)
                 };
             }
 
@@ -144,7 +194,7 @@ namespace Modelizer
                 {
                     Name = parameterSymbols[i].Name,
                     Type = TypeName(parameterSymbols[i].Type),
-                    Default = parameterSymbols[i].HasExplicitDefaultValue?parameterSymbols[i].ExplicitDefaultValue.ToString():""
+                    Default = parameterSymbols[i].HasExplicitDefaultValue ? parameterSymbols[i].ExplicitDefaultValue.ToString() : ""
                 };
             }
             return parameterModels;

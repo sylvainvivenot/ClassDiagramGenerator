@@ -97,6 +97,20 @@ namespace ClassDiagramGeneratorLib.Test
             Clean(solution);
         }
 
+        [Test]
+        public void Should_create_an_aggregation_link_between_class1_and_class2_when_class1_inherits_fromis_used_in_class2()
+        {
+            string solution = @"Class1UsedInClass2";
+            var solutionModelBuilder = CreateSolutionModelBuilder(solution);
+            var solutionModel = solutionModelBuilder.Build();
+            var link = solutionModel.Links.First();
+
+            Check.That(link.From).IsEqualTo(0);
+            Check.That(link.To).IsEqualTo(1);
+            Check.That(link.Relashionship).IsEqualTo("aggregation");
+            Clean(solution);
+        }
+
         private static SolutionModelBuilder CreateSolutionModelBuilder(string solution)
         {
             if (!Directory.Exists(solution))
@@ -106,6 +120,7 @@ namespace ClassDiagramGeneratorLib.Test
             var solutionModelBuilder = new SolutionModelBuilder($@".\{solution}\{solution}.sln");
             return solutionModelBuilder;
         }
+
 
         private static void Clean(string solution)
         {
