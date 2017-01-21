@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/bootstrap-fileinput/css/fileinput.min.css" />
+</head>
+<body ng-app="classDiagramGeneratorApp" ng-controller="diagramController">
+<div >
+    <input type="file"  file-model="file"/>
+    <button ng-click="SendData()">{{buttonName}}</button>
+</div>
+<div >
+    {{response}}
+</div>
+<script src="lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript"></script>
+<script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-file-model/angular-file-model.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

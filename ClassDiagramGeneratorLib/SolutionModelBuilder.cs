@@ -98,13 +98,11 @@ namespace Modelizer
             foreach (var typeSymbol in typeSymbols)
             {
                 INamedTypeSymbol typeSymbolBaseType = typeSymbol.BaseType;
-                if (typeSymbolBaseType != null && typeSymbolBaseType.Name != "Object")
+                if (typeSymbolBaseType != null && typeSymbolBaseType.Name != "Object" &&
+                    typeSymbols.Contains(typeSymbolBaseType))
                 {
-                    if (typeSymbols.Contains(typeSymbolBaseType))
-                    {
-                        int indexOfBaseType = typeSymbols.IndexOf(typeSymbolBaseType);
-                        addLink(indexOfType, indexOfBaseType);
-                    }
+                    int indexOfBaseType = typeSymbols.IndexOf(typeSymbolBaseType);
+                    addLink(indexOfType, indexOfBaseType);
                 }
                 indexOfType++;
             }

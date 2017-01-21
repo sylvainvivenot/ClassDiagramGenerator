@@ -1,0 +1,14 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <AdditionalFilesToIncludeForProject />
+    <BuildProcessArchitecture>x86</BuildProcessArchitecture>
+    <CopyReferencedAssembliesToWorkspace>True</CopyReferencedAssembliesToWorkspace>
+    <IgnoredTests>
+      <AllTestsSelector />
+    </IgnoredTests>
+    <IgnoreThisComponentCompletely>True</IgnoreThisComponentCompletely>
+    <RunPostBuildEvents>True</RunPostBuildEvents>
+    <RunPreBuildEvents>True</RunPreBuildEvents>
+    <UseBuildConfiguration></UseBuildConfiguration>
+  </Settings>
+</ProjectConfiguration>
