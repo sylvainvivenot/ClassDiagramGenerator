@@ -157,6 +157,8 @@
         }
     }
 
+    var from = new go.Binding("fromArrow", "relationship", convertFromArrow);
+    var to = new go.Binding("toArrow", "relationship", convertToArrow);
     myDiagram.linkTemplate =
       $(go.Link,
         { routing: go.Link.Orthogonal },

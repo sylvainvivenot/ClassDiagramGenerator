@@ -31,12 +31,12 @@ namespace Modelizer
             ProcessGeneralization(
                 (type, baseType) =>
                 {
-                    linkModel.Add(new LinkModel { From = type, To = baseType, Relashionship = "generalization" });
+                    linkModel.Add(new LinkModel { From = type, To = baseType, Relationship = "generalization" });
                 });
             ProcessAggregation(
                 (type, baseType) =>
                 {
-                    linkModel.Add(new LinkModel { From = type, To = baseType, Relashionship = "aggregation" });
+                    linkModel.Add(new LinkModel { From = type, To = baseType, Relationship = "aggregation" });
                 });
             return linkModel.ToArray();
         }

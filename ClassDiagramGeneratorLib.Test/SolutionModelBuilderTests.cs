@@ -93,7 +93,7 @@ namespace ClassDiagramGeneratorLib.Test
 
             Check.That(link.From).IsEqualTo(0);
             Check.That(link.To).IsEqualTo(1);
-            Check.That(link.Relashionship).IsEqualTo("generalization");
+            Check.That(link.Relationship).IsEqualTo("generalization");
             Clean(solution);
         }
 
@@ -107,7 +107,7 @@ namespace ClassDiagramGeneratorLib.Test
 
             Check.That(link.From).IsEqualTo(0);
             Check.That(link.To).IsEqualTo(1);
-            Check.That(link.Relashionship).IsEqualTo("aggregation");
+            Check.That(link.Relationship).IsEqualTo("aggregation");
             Clean(solution);
         }
 

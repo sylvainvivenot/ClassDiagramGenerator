@@ -48,6 +48,6 @@ namespace AssemblyModel
     {
         public int From { get; set; }
         public int To { get; set; }
-        public string Relashionship { get; set; }
+        public string Relationship { get; set; }
     }
 }
