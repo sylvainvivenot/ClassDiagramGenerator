@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
@@ -21,6 +22,11 @@ namespace ClassDiagramGeneratorWeb
                options.IgnoreObsoleteProperties();
                options.DescribeAllEnumsAsStrings();
            });
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 6000000000;
+            });
             services.AddMvc();
 
         }
@@ -41,8 +47,8 @@ namespace ClassDiagramGeneratorWeb
             }
             app.UseStaticFiles();
             app.UseMvc();
-            app.UseSwagger();
-            app.UseSwaggerUi(c=> {c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");});
+            //app.UseSwagger();
+            //app.UseSwaggerUi(c=> {c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");});
             
 
         }

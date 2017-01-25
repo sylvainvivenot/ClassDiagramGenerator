@@ -3,23 +3,39 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="lib/bootstrap-fileinput/css/fileinput.min.css" />
+    <!--<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />-->
+    <!--<link rel="stylesheet" href="lib/bootstrap-toggle/css/bootstrap-toggle.min.css" />-->
+    <!--<link rel="stylesheet" href="lib/bootstrap-fileinput/css/fileinput.min.css" />-->
+    <link rel="stylesheet" href="css/app.css" />
 </head>
-<body ng-app="classDiagramGeneratorApp" ng-controller="diagramController">
-<div >
-    <input type="file"  file-model="file"/>
-    <button ng-click="SendData()">{{buttonName}}</button>
-</div>
-<div >
-    {{response}}
-</div>
-<script src="lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
-<script src="lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="lib/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript"></script>
-<script src="lib/angular/angular.min.js"></script>
-    <script src="lib/angular-file-model/angular-file-model.js"></script>
-    <script src="app.js"></script>
+<body ng-app="classDiagramGeneratorApp">
+    <div ng-controller="diagramGeneratorController">
+        <input type="checkbox" ng-model="isDebug">
+        <input type="file" file-model="file" />
+        <button ng-click="SendData()">{{buttonName}}</button>
+        <div id="debug" ng-show="isDebug">
+            {{response}}
+        </div>
+        <div id="myDiagramDiv" ng-controller="diagramShowerController" style="border: solid 1px black; width:100%; height:600px">
+            {{diagram}}
+        </div>
+    </div>
+
+    
+
+
+
+    <script src="lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <!--<script src="lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>-->
+    <!--<script src="lib/bootstrap-toggle/js/bootstrap-toggle.min.js" type="text/javascript"></script>-->
+    <!--<script src="lib/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript"></script>-->
+    <script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular-file-model/angular-file-model.js"></script>
+    <script src="app/app.js" type="text/javascript"></script>
+    <script src="app/controller/DiagramGenerationController.js"></script>
+    <script src="lib/go.js" type="text/javascript"></script>
+    <script src="lib/classDiagram.js" type="text/javascript"></script>
+    <script src="app/controller/diagramShowerController.js"></script>
 </body>
 
 </html>

@@ -1,14 +1,18 @@
-﻿var app = angular.module('classDiagramGeneratorApp', ['file-model']);
-app.controller('diagramController',
-    function diagramController($scope, $http) {
+﻿var app = angular.module('classDiagramGeneratorApp');
+app.controller('diagramGeneratorController',
+    function diagramController($rootScope, $scope, $http) {
         $scope.buttonName = "Send";
         
-        function generateDiagram(filePath) {
-           
+        function generateDiagram(filePath,callback) {
+            var diagram = null;
             $http.get('/Api/ClassDiagram/'+filePath).then(
                 function(response) {
                     console.log(response);
+                    diagram = response.data;
+                    console.log("diagram : " + diagram);
+                    callback(diagram);
                 });
+            
         }
 
         
@@ -28,10 +32,14 @@ app.controller('diagramController',
                 })
                 .then(function(response) {
                     var filePath = response.data.filePath;
-                    generateDiagram(filePath);
-                    $scope.response = filePath;
+                    generateDiagram(filePath,function(diagram) {
+                        console.log("diagram : " + diagram);
+                        $scope.$broadcast("diagram", { diagram: diagram });
+                    });
+
+                    $rootScope.response = filePath;
                 },function(response) {
-                    $scope.response = response;
+                    $rootScope.response = response;
                 });
         }
     });

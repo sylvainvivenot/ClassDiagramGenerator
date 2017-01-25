@@ -5,6 +5,7 @@
     "bootstrap": "3.3.6",
     "bootstrap-fileinput": "4.3.1",
     "angular": "1.5.5",
-    "angular-file-model": "0.3.1"
+    "angular-file-model": "0.3.1",
+    "bootstrap-toggle": "2.2.2" 
   }
 }
