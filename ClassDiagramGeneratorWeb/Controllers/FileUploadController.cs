@@ -17,22 +17,19 @@ namespace ClassDiagramGeneratorWeb.Controllers
     { 
         [HttpPost]
         [Route("Api/UploadFile")]
-        public async Task<IActionResult> Post(IFormFile file)
+        public IActionResult Post()
         {
-            if (file == null)
-            {
-                return NotFound();
-            }
-            var fileName = Path.GetFileName(file.FileName);
+            int length = (int)(Request.ContentLength ?? 0);
+            var bytes = new byte[length];
+            var originFileName = Request.Headers["X-File-Name"];
+            var fileSize = Request.Headers["X-File-Size"];
+            var fileType = Request.Headers["X-File-Type"];
+            var fileName = Path.GetFileName(originFileName);
             string filePath = Path.Combine(Path.GetTempPath(),  fileName);
 
-            if (file.Length > 0)
-            {
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
+            var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
+            fileStream.Write(bytes, 0, length);
+            fileStream.Close();
 
             return Ok(new {filePath=fileName});
         }
