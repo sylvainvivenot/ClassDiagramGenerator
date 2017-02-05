@@ -25,13 +25,13 @@ namespace ClassDiagramGeneratorWeb.Controllers
             var fileSize = Request.Headers["X-File-Size"];
             var fileType = Request.Headers["X-File-Type"];
             var fileName = Path.GetFileName(originFileName);
-            string filePath = Path.Combine(Path.GetTempPath(),  fileName);
+            string filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString(),  fileName);
 
             var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
             fileStream.Write(bytes, 0, length);
             fileStream.Close();
 
-            return Ok(new {filePath=fileName});
+            return Ok(new {filePath= filePath });
         }
     }
 }

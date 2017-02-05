@@ -36,7 +36,8 @@ namespace ClassDiagramGeneratorWeb.Controllers
         [HttpGet("{fileName}/{solutionFile}")]
         public IActionResult GetClassDiagram(string fileName, string solutionFile)
         {
-            string extractionFolder = UnZipSolution(fileName);
+            string filePath = Path.Combine(Path.GetTempPath(), fileName);
+            string extractionFolder = UnZipSolution(filePath);
 
             string[] solutionFiles = Directory.GetFiles(extractionFolder, solutionFile,SearchOption.AllDirectories);
             if (solutionFiles.Length == 0)
