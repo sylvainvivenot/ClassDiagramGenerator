@@ -26,7 +26,7 @@ namespace ClassDiagramGeneratorWeb.Controllers
             var fileType = Request.Headers["X-File-Type"];
             var fileName = Path.GetFileName(originFileName);
             string filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString(),  fileName);
-
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
             fileStream.Write(bytes, 0, length);
             fileStream.Close();
