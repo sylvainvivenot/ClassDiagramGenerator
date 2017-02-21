@@ -26,6 +26,11 @@ namespace ClassDiagramGeneratorWeb.Controllers
         }
 
        
+        public class SolutionDescription
+        {
+            public string ArchivePath { get; set; }
+            public string SlnFile { get; set; }
+        }
 
         /// <summary>
         /// 
@@ -33,13 +38,13 @@ namespace ClassDiagramGeneratorWeb.Controllers
         /// <param name="fileName"></param>
         /// <param name="solutionFile"></param>
         /// <returns></returns>
-        [HttpGet("{fileName}/{solutionFile}")]
-        public IActionResult GetClassDiagram(string fileName, string solutionFile)
+        [HttpPost]
+        public IActionResult GetClassDiagram([FromBody] SolutionDescription solution)
         {
-            string filePath = Path.Combine(Path.GetTempPath(), fileName);
+            string filePath = Path.Combine(Path.GetTempPath(), solution.ArchivePath);
             string extractionFolder = UnZipSolution(filePath);
 
-            string[] solutionFiles = Directory.GetFiles(extractionFolder, solutionFile,SearchOption.AllDirectories);
+            string[] solutionFiles = Directory.GetFiles(extractionFolder, solution.SlnFile,SearchOption.AllDirectories);
             if (solutionFiles.Length == 0)
             {
                 return Json(new { Success = false, Message = "no sln file found" });
