@@ -44,6 +44,7 @@ app.controller('diagramGeneratorController',
 
         function uploadFile() {
             wait();
+            $scope.loaded = 0;
             var reqObj = new XMLHttpRequest();
 
             reqObj.upload.addEventListener("progress", uploadProgress, false);
@@ -57,7 +58,6 @@ app.controller('diagramGeneratorController',
             reqObj.setRequestHeader('X-File-Type', $scope.type);
             reqObj.setRequestHeader('X-File-Size', $scope.size);
             reqObj.send($scope.fileToUpload);
-
 
             function uploadProgress(evt) {
                 if (evt.lengthComputable) {

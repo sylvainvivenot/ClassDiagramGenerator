@@ -28,7 +28,7 @@ namespace ClassDiagramGeneratorWeb
                 options.MultipartBodyLengthLimit = 6000000000;
             });
             services.AddMvc();
-
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +47,7 @@ namespace ClassDiagramGeneratorWeb
             }
             app.UseStaticFiles();
             app.UseMvc();
+            
             //app.UseSwagger();
             //app.UseSwaggerUi(c=> {c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");});
             

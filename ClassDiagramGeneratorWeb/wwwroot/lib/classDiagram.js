@@ -1,22 +1,25 @@
-﻿function init(nodedata, linkdata) {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
-    var $ = go.GraphObject.make;
-
-    myDiagram =
-      $(go.Diagram, "myDiagramDiv",
+﻿var $ = go.GraphObject.make;
+myDiagram =
+    $(go.Diagram, "myDiagramDiv",
         {
             initialContentAlignment: go.Spot.Center,
             "undoManager.isEnabled": true,
             layout: $(go.TreeLayout,
-                      { // this only lays out in trees nodes connected by "generalization" links
-                          angle: 90,
-                          path: go.TreeLayout.PathSource,  // links go from child to parent
-                          setsPortSpot: false,  // keep Spot.AllSides for link connection spot
-                          setsChildPortSpot: false,  // keep Spot.AllSides
-                          // nodes not connected by "generalization" links are laid out horizontally
-                          arrangement: go.TreeLayout.ArrangementHorizontal
-                      })
+                { // this only lays out in trees nodes connected by "generalization" links
+                    angle: 90,
+                    path: go.TreeLayout.PathSource,  // links go from child to parent
+                    setsPortSpot: false,  // keep Spot.AllSides for link connection spot
+                    setsChildPortSpot: false,  // keep Spot.AllSides
+                    // nodes not connected by "generalization" links are laid out horizontally
+                    arrangement: go.TreeLayout.ArrangementHorizontal
+                })
         });
+
+
+function init(nodedata, linkdata) {
+    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    
+
 
     // show visibility or access as a single character at the beginning of each property or method
     function convertVisibility(v) {
