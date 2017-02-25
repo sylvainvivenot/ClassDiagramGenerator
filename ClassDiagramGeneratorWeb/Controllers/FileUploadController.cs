@@ -19,17 +19,30 @@ namespace ClassDiagramGeneratorWeb.Controllers
         [Route("Api/UploadFile")]
         public IActionResult Post()
         {
-            int length = (int)(Request.ContentLength ?? 0);
-            var bytes = new byte[length];
+            
+            
             var originFileName = Request.Headers["X-File-Name"];
-            var fileSize = Request.Headers["X-File-Size"];
+            var fileSize = int.Parse(Request.Headers["X-File-Size"]);
             var fileType = Request.Headers["X-File-Type"];
             var fileName = Path.GetFileName(originFileName);
             string filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString(),  fileName);
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
-            fileStream.Write(bytes, 0, length);
-            fileStream.Close();
+
+            int uploaded = 0;
+            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite))
+            {
+                while (uploaded < fileSize)
+                {
+                    int length = 1;
+                    var buffer = new byte[length];
+                    int newBytes = Request.Body.Read(buffer, 0, length);
+                    fileStream.Write(buffer, 0, length);
+                    uploaded += newBytes;
+                }
+            }
+
+
+            
 
             return Ok(new {filePath= filePath });
         }

@@ -36,9 +36,11 @@ namespace ClassDiagramGeneratorWeb.Controllers
         [HttpPost]
         public IActionResult GetClassDiagram([FromBody] SolutionDescription solution)
         {
-            string filePath = Path.Combine(Path.GetTempPath(), solution.ArchivePath);
-            string extractionFolder = UnZipSolution(filePath);
-
+            string extractionFolder = UnZipSolution(solution.ArchivePath);
+            if(string.IsNullOrEmpty(solution.SlnFile))
+            {
+                solution.SlnFile = "*.sln";
+            }
             string[] solutionFiles = Directory.GetFiles(extractionFolder, solution.SlnFile,SearchOption.AllDirectories);
             if (solutionFiles.Length == 0)
             {
@@ -56,15 +58,15 @@ namespace ClassDiagramGeneratorWeb.Controllers
             return solutionModel;
         }
 
-        private string UnZipSolution(string fileName)
+        private string UnZipSolution(string archivePath)
         {
-            string filePath = Path.Combine(Path.GetTempPath(), fileName);
-            string extractionFolder = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName));
+            string filePath = Path.GetDirectoryName(archivePath);
+            string extractionFolder = Path.Combine(filePath, Path.GetFileNameWithoutExtension(archivePath));
 
             if (!Directory.Exists(extractionFolder))
             {
                 Directory.CreateDirectory(extractionFolder);
-                System.IO.Compression.ZipFile.ExtractToDirectory(filePath, extractionFolder);
+                System.IO.Compression.ZipFile.ExtractToDirectory(archivePath, extractionFolder);
             }
             return extractionFolder;
         }
