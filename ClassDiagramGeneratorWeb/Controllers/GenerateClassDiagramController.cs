@@ -7,6 +7,11 @@ using Modelizer;
 
 namespace ClassDiagramGeneratorWeb.Controllers
 {
+    public class SolutionDescription
+    {
+        public string ArchivePath { get; set; }
+        public string SlnFile { get; set; }
+    }
     /// <summary>
     /// 
     /// 
@@ -19,18 +24,8 @@ namespace ClassDiagramGeneratorWeb.Controllers
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        [HttpGet("{fileName}")]
-        public IActionResult GetClassDiagram(string fileName)
-        {
-            return GetClassDiagram(fileName, "*.sln");
-        }
-
        
-        public class SolutionDescription
-        {
-            public string ArchivePath { get; set; }
-            public string SlnFile { get; set; }
-        }
+       
 
         /// <summary>
         /// 

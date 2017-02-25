@@ -28,7 +28,11 @@ app.controller('diagramGeneratorController',
 
         function generateDiagram(filePath, callback) {
             var diagram = null;
-            $http.get('/Api/ClassDiagram/' + filePath).then(
+            var solution = {
+                ArchivePath: filePath,
+                SlnFile: ""
+            };
+            $http.post('/Api/ClassDiagram/', JSON.stringify(solution)).then(
                 function (response) {
                     console.log(response);
                     diagram = response.data;
